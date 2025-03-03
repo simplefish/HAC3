@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Actions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 15px auto;
+            display: block;
+            text-align: center;
+        }
+        button {
+            display: block;
+            width: 250px;
+            margin: 15px auto;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Trigger SDK Actions</h2>
+
+    <label for="deeplinkInput"><b>Modify Deeplink:</b></label>
+    <input type="text" id="deeplinkInput" value="https://shop.pimmer.dev/cart/0192d9c7-110b-73a3-afd8-93d35e94f262/add/0192e630-cc70-71ee-a38c-1cc50710a919?sourceType=category&sourceId=0192e2c6-ffc2-738d-ae74-fbd13c43cda3">
+    
+    <button onclick="openDeeplink()">Open Deeplink</button>
+    <button onclick="shareProduct()">Share Product</button>
+    <button onclick="closeAction()">Close</button>
+
+    <script>
+        function sendMessageToSDK(data) {
+            const jsonData = JSON.stringify(data);
+
+            // Call Android interface
+            if (window.PimSDKAndroidInterface) {
+                window.PimSDKAndroidInterface.openDeeplink(jsonData);
+            }
+
+            // Call iOS interface
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.iOSInterface) {
+                window.webkit.messageHandlers.iOSInterface.postMessage(jsonData);
+            }
+        }
+
+        function openDeeplink() {
+            const deeplinkValue = document.getElementById("deeplinkInput").value;
+            const data = { deeplink: deeplinkValue };
+            sendMessageToSDK(data);
+        }
+
+        function shareProduct() {
+            const data = { share: "domain/product/{id}" };
+            sendMessageToSDK(data);
+        }
+
+        function closeAction() {
+            const data = { action: "close" };
+            sendMessageToSDK(data);
+        }
+    </script>
+
+</body>
+</html>
