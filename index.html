@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
+            margin-top: 20px;
         }
         input {
             width: 80%;
@@ -26,11 +26,29 @@
             font-size: 16px;
             cursor: pointer;
         }
+        #debugContainer {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f8f8f8;
+            border: 1px solid #ccc;
+            word-break: break-word;
+            text-align: left;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 </head>
 <body>
 
     <h2>Trigger SDK Actions</h2>
+
+    <!-- Debugging Block -->
+    <div id="debugContainer">
+        <h3>Debug Info</h3>
+        <p><b>URL Hash Data:</b> <span id="hashData">Loading...</span></p>
+        <p><b>Decoded Data:</b> <span id="decodedData">Loading...</span></p>
+    </div>
 
     <!-- Input for modifying deeplink -->
     <label for="deeplinkInput"><b>Modify Deeplink:</b></label>
@@ -45,6 +63,27 @@
     <button onclick="closeAction()">Close</button>
 
     <script>
+        // Function to decode Base64 safely
+        function decodeBase64(str) {
+            try {
+                return decodeURIComponent(atob(str).split("").map(function(c) {
+                    return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(""));
+            } catch (e) {
+                return "Invalid or No Base64 Data";
+            }
+        }
+
+        // Extract and debug URL hash data
+        function debugUrlData() {
+            const hash = window.location.hash.substring(1); // Remove '#' from hash
+            document.getElementById("hashData").innerText = hash ? hash : "No data passed";
+
+            // Try decoding the base64 data
+            const decoded = decodeBase64(hash);
+            document.getElementById("decodedData").innerText = decoded;
+        }
+
         function sendMessageToSDK(data) {
             const jsonData = JSON.stringify(data);
 
@@ -75,6 +114,9 @@
             const data = { action: "close" };
             sendMessageToSDK(data);
         }
+
+        // Run debugging when the page loads
+        window.onload = debugUrlData;
     </script>
 
 </body>
