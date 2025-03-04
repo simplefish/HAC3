@@ -14,7 +14,7 @@
             width: 80%;
             padding: 10px;
             font-size: 16px;
-            margin: 15px auto;
+            margin: 10px auto;
             display: block;
             text-align: center;
         }
@@ -32,11 +32,16 @@
 
     <h2>Trigger SDK Actions</h2>
 
+    <!-- Input for modifying deeplink -->
     <label for="deeplinkInput"><b>Modify Deeplink:</b></label>
     <input type="text" id="deeplinkInput" value="https://shop.pimmer.dev/cart/0192d9c7-110b-73a3-afd8-93d35e94f262/add/0192e630-cc70-71ee-a38c-1cc50710a919?sourceType=category&sourceId=0192e2c6-ffc2-738d-ae74-fbd13c43cda3">
-    
     <button onclick="openDeeplink()">Open Deeplink</button>
+
+    <!-- Input for modifying share text -->
+    <label for="shareTextInput"><b>Modify Share Text:</b></label>
+    <input type="text" id="shareTextInput" placeholder="Enter text to share">
     <button onclick="shareProduct()">Share Product</button>
+
     <button onclick="closeAction()">Close</button>
 
     <script>
@@ -61,7 +66,8 @@
         }
 
         function shareProduct() {
-            const data = { share: "domain/product/{id}" };
+            const shareText = document.getElementById("shareTextInput").value.trim();
+            const data = { share: shareText || "Default share text" }; // Use default if input is empty
             sendMessageToSDK(data);
         }
 
