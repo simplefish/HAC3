@@ -5,37 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Button Actions</title>
     <style>
+        /* General Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 20px;
+            background: #f4f4f4;
+            padding: 20px;
         }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Container for inputs and buttons */
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            margin: auto;
+        }
+
+        /* Input Fields */
         input {
-            width: 80%;
-            padding: 10px;
+            width: 100%;
+            padding: 12px;
             font-size: 16px;
-            margin: 10px auto;
-            display: block;
-            text-align: center;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: left;
+            transition: 0.3s;
         }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Buttons */
         button {
-            display: block;
-            width: 250px;
-            margin: 15px auto;
-            padding: 10px;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
             font-size: 16px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            transition: 0.3s;
         }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* Debugging Block */
         #debugContainer {
             margin-top: 20px;
-            padding: 10px;
-            background: #f8f8f8;
-            border: 1px solid #ccc;
-            word-break: break-word;
+            padding: 15px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             text-align: left;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 450px;
+            margin: auto;
+            word-break: break-word;
+        }
+
+        #debugContainer h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #debugContainer p {
+            font-size: 14px;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container, #debugContainer {
+                max-width: 100%;
+                padding: 15px;
+            }
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -43,24 +127,26 @@
 
     <h2>Trigger SDK Actions</h2>
 
+    <div class="container">
+        <!-- Input for modifying deeplink -->
+        <label for="deeplinkInput"><b>Modify Deeplink:</b></label>
+        <input type="text" id="deeplinkInput" value="https://shop.pimmer.dev/cart/0192d9c7-110b-73a3-afd8-93d35e94f262/add/0192e630-cc70-71ee-a38c-1cc50710a919?sourceType=category&sourceId=0192e2c6-ffc2-738d-ae74-fbd13c43cda3">
+        <button class="btn-primary" onclick="openDeeplink()">Open Deeplink</button>
+
+        <!-- Input for modifying share text -->
+        <label for="shareTextInput"><b>Modify Share Text:</b></label>
+        <input type="text" id="shareTextInput" placeholder="Enter text to share">
+        <button class="btn-secondary" onclick="shareProduct()">Share Product</button>
+
+        <button class="btn-danger" onclick="closeAction()">Close</button>
+    </div>
+
     <!-- Debugging Block -->
     <div id="debugContainer">
         <h3>Debug Info</h3>
         <p><b>URL Hash Data:</b> <span id="hashData">Loading...</span></p>
         <p><b>Decoded Data:</b> <span id="decodedData">Loading...</span></p>
     </div>
-
-    <!-- Input for modifying deeplink -->
-    <label for="deeplinkInput"><b>Modify Deeplink:</b></label>
-    <input type="text" id="deeplinkInput" value="https://shop.pimmer.dev/cart/0192d9c7-110b-73a3-afd8-93d35e94f262/add/0192e630-cc70-71ee-a38c-1cc50710a919?sourceType=category&sourceId=0192e2c6-ffc2-738d-ae74-fbd13c43cda3">
-    <button onclick="openDeeplink()">Open Deeplink</button>
-
-    <!-- Input for modifying share text -->
-    <label for="shareTextInput"><b>Modify Share Text:</b></label>
-    <input type="text" id="shareTextInput" placeholder="Enter text to share">
-    <button onclick="shareProduct()">Share Product</button>
-
-    <button onclick="closeAction()">Close</button>
 
     <script>
         // Function to decode Base64 safely
